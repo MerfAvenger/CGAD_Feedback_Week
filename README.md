@@ -1,5 +1,5 @@
 # CGAD_Feedback_Week
-4 (/2) people do weird stuff with python.
+4 (/3) people do weird stuff with python.
 
 !!IMPORTANT!!
 
