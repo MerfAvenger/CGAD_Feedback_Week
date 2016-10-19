@@ -68,7 +68,7 @@ def game_init():
     # Set a random start point.
     gStartx = random.randint(5, CELLWIDTH - 6)
     gStarty = random.randint(5, CELLHEIGHT - 6)
-    gTankCoords = [{'x': gStartx,     'y': gStarty},
+    gTankCoords = [{'x': gStartx,     'y': gStarty}],
     gDirection = UP
     
 def runGame():
