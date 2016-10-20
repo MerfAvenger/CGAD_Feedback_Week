@@ -2,7 +2,7 @@
 4 (/3) people do weird stuff with python.
 
 20/10/16
-- added shitty art assests sans bullets
+- added shitty art assests
 - basic movement (controls feel off)
 - test sprite for tank that rotates to face movement direction
 
