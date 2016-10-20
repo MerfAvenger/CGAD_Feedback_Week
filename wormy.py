@@ -26,11 +26,13 @@ GREEN     = (  0, 255,   0)
 DARKGREEN = (  0, 155,   0)
 DARKGRAY  = ( 40,  40,  40)
 BGCOLOR = GREEN
-
+################################################
+##CREATING ARRAY SYSTEM (ANNOYING AS SHIT)
 width = 32
 height =  32
 Matrix = [[0 for x in range(width)] for y in range(height)] 
 
+##DRAWING THE MAP
 for height in range (0,32):
     for width in range (0,32):
         if width ==0:
@@ -46,56 +48,37 @@ for height in range (0,32):
             
             
             
-##This is all terribly done, but I'll fix it all tomorrow
-##Random sides bits
-Matrix[5][4] = 1
-Matrix[5][5] = 1
-Matrix[5][10] = 1
-Matrix[5][11] = 1
 
-Matrix[10][4] = 1
-Matrix[10][5] = 1
-Matrix[10][10] = 1
-Matrix[10][11] = 1
+for y in range (4,6):
+    Matrix[5][y]  = 1
+    Matrix[5][(y+6)] = 1
+    
+    Matrix[10][y]  = 1
+    Matrix[10][(y+6)] = 1
+    
+    Matrix[21][y]  = 1
+    Matrix[21][(y+6)] = 1
+    
+    Matrix[26][y]  = 1
+    Matrix[26][(y+6)] = 1
 
-Matrix[26][4] = 1
-Matrix[26][5] = 1
-Matrix[26][10] = 1
-Matrix[26][11] = 1
+for y in range (6,10):
+        
+    Matrix[15][y] = 1
+    Matrix[16][y] = 1
 
-Matrix[21][4] = 1
-Matrix[21][5] = 1
-Matrix[21][10] = 1
-Matrix[21][11] = 1
+for y in range (13,16):
+    Matrix[15][y] = 1
+    Matrix[16][y] = 1
 
-#Middle Bit
-Matrix[15][6] = 1
-Matrix[15][7] = 1
-Matrix[15][8] = 1
-Matrix[15][9] = 1
+for y in range (0,3):
+    Matrix[15][y] = 1
+    Matrix[16][y] = 1
 
-Matrix[16][6] = 1
-Matrix[16][7] = 1
-Matrix[16][8] = 1
-Matrix[16][9] = 1
+gPlayer_X = 3
+gPlayer_Y = 3
+Matrix[gPlayer_X][gPlayer_Y] = 2
 
-#BOTTOM Bit
-Matrix[15][13] = 1
-Matrix[15][14] = 1
-Matrix[15][15] = 1
-
-Matrix[16][13] = 1
-Matrix[16][14] = 1
-Matrix[16][15] = 1
-
-#TOP Bit
-Matrix[15][0] = 1
-Matrix[15][1] = 1
-Matrix[15][2] = 1
-
-Matrix[16][0] = 1
-Matrix[16][1] = 1
-Matrix[16][2] = 1
 # ----------------------------------------------------------------------------------------------------------------------------------------
 
 # RANDOM START CODE FOR ENEMIES
@@ -116,6 +99,7 @@ LEFT = 'left'
 RIGHT = 'right'
 
 def main():
+
     init()
     drawMap()
     drawGrid()
@@ -142,8 +126,10 @@ def game_init():
     gDirection = UP
     
 def runGame():
+    
     game_init()    
     while True: # main game loop
+        Matrix[gPlayer_X][gPlayer_Y] = 2
         game_over = game_update()
         game_render()
         if game_over == True:
@@ -158,29 +144,40 @@ def drawGrid():
     for y in range(0, WINDOWHEIGHT, CELLSIZE): # draw horizontal lines
         pygame.draw.line(DISPLAYSURF, DARKGRAY, (0, y), (WINDOWWIDTH, y))
         
+    
 def game_update():
-    global gWormCoords, gDirection, gApple
+
+    global gPlayer_X, gPlayer_Y
 
     for event in pygame.event.get(): # event handling loop
         if event.type == QUIT:
             terminate()
         elif event.type == KEYDOWN:
-            if (event.key == K_LEFT or event.key == K_a) and gDirection != RIGHT:
-                gDirection = LEFT
-            elif (event.key == K_RIGHT or event.key == K_d) and gDirection != LEFT:
-                gDirection = RIGHT
-            elif (event.key == K_UP or event.key == K_w) and gDirection != DOWN:
-                gDirection = UP
-            elif (event.key == K_DOWN or event.key == K_s) and gDirection != UP:
-                gDirection = DOWN
+            if (event.key == K_LEFT or event.key == K_a):
+                if Matrix[(gPlayer_X-1)][gPlayer_Y]!=1:
+                    Matrix[gPlayer_X][gPlayer_Y] = 0
+                    gPlayer_X -= 1
+            elif (event.key == K_RIGHT or event.key == K_d):
+                if Matrix[(gPlayer_X+1)][gPlayer_Y]!=1:
+                    Matrix[gPlayer_X][gPlayer_Y] = 0
+                    gPlayer_X += 1
+            elif (event.key == K_UP or event.key == K_w):
+                if Matrix[(gPlayer_X)][gPlayer_Y-1]!=1:
+                    Matrix[gPlayer_X][gPlayer_Y] = 0
+                    gPlayer_Y -= 1
+            elif (event.key == K_DOWN or event.key == K_s):
+                if Matrix[(gPlayer_X)][gPlayer_Y+1]!=1:
+                    Matrix[gPlayer_X][gPlayer_Y] = 0
+                    gPlayer_Y += 1
             elif event.key == K_ESCAPE:
                 terminate()
+                
                    
 # ------------------------------------------------------------------------------------------------------------------------------------------
                    
 def game_render():
-    drawGrid()
     drawMap()
+    drawGrid()
     pygame.display.update()
     FPSCLOCK.tick(FPS)
                    
@@ -249,6 +246,10 @@ def drawMap():
             elif Matrix[x][y] == 1:
                 FloorRect = pygame.Rect(x*CELLSIZE, y*CELLSIZE, CELLSIZE, CELLSIZE)
                 pygame.draw.rect(DISPLAYSURF, RED, FloorRect)
+            elif Matrix[x][y] == 2:
+                PlayerRect = pygame.Rect(x*CELLSIZE, y*CELLSIZE, CELLSIZE, CELLSIZE)
+                pygame.draw.rect(DISPLAYSURF, GREEN, PlayerRect)
+            
 
 if __name__ == '__main__':
     main()
