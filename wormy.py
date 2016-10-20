@@ -15,9 +15,9 @@
 import random, pygame, sys
 from pygame.locals import *
 
-FPS = 12 
-WINDOWWIDTH = 1600
-WINDOWHEIGHT = 900
+FPS = 15
+WINDOWWIDTH = 640
+WINDOWHEIGHT = 480
 CELLSIZE = 20
 assert WINDOWWIDTH % CELLSIZE == 0, "Window width must be a multiple of cell size."
 assert WINDOWHEIGHT % CELLSIZE == 0, "Window height must be a multiple of cell size."
@@ -31,12 +31,14 @@ RED       = (255,   0,   0)
 GREEN     = (  0, 255,   0)
 DARKGREEN = (  0, 155,   0)
 DARKGRAY  = ( 40,  40,  40)
-BGCOLOR = GREEN
+BGCOLOR = BLACK
 
 UP = 'up'
 DOWN = 'down'
 LEFT = 'left'
 RIGHT = 'right'
+# stop will be removed with movement rewrite
+STOP = 'stop'
 
 HEAD = 0 # syntactic sugar: index of the worm's head
 
@@ -49,9 +51,13 @@ gStarty = random.randint(5, CELLHEIGHT - 6)
 gWormCoords = [{'x': gStartx,     'y': gStarty},
               {'x': gStartx - 1, 'y': gStarty},
               {'x': gStartx - 2, 'y': gStarty}]
-gDirection = RIGHT
+gDirection = STOP
 
 gApple = {'x': 0, 'y': 0}
+
+# Load art assets (from same directory as python)
+sTank = pygame.image.load('GoodTank.png')
+
 
 #
 #
@@ -88,18 +94,20 @@ def game_init():
     gStartx = random.randint(5, CELLWIDTH - 6)
     gStarty = random.randint(5, CELLHEIGHT - 6)
     gWormCoords = [{'x': gStartx,     'y': gStarty},
-                  {'x': gStartx - 1, 'y': gStarty},
-                  {'x': gStartx - 2, 'y': gStarty}]
-    gDirection = RIGHT
+              {'x': gStartx - 1, 'y': gStarty},
+              {'x': gStartx - 2, 'y': gStarty}]
+    gDirection = STOP
         
     # Start the gApple in a random place.
     gApple = getRandomLocation();
 
 
+
 def game_update():
     global gWormCoords, gDirection, gApple
-
+    
     for event in pygame.event.get(): # event handling loop
+        gDirection == STOP
         if event.type == QUIT:
             terminate()
         elif event.type == KEYDOWN:
@@ -113,18 +121,22 @@ def game_update():
                 gDirection = DOWN
             elif event.key == K_ESCAPE:
                 terminate()
+        else:
+            gDirection = STOP
+                
 
     # check if the worm has hit itself or the edge
     if gWormCoords[HEAD]['x'] == -1 or gWormCoords[HEAD]['x'] == CELLWIDTH or gWormCoords[HEAD]['y'] == -1 or gWormCoords[HEAD]['y'] == CELLHEIGHT:
         return True # game over, return True
-    for wormBody in gWormCoords[1:]:
-        if wormBody['x'] == gWormCoords[HEAD]['x'] and wormBody['y'] == gWormCoords[HEAD]['y']:
-            return True # game over, return True
+    #for wormBody in gWormCoords[1:]:
+        #if wormBody['x'] == gWormCoords[HEAD]['x'] and wormBody['y'] == gWormCoords[HEAD]['y']:
+            #return True # game over, return True
 
-    # check if worm has eaten an apply
+    # apple used as ghetto wall
     if gWormCoords[HEAD]['x'] == gApple['x'] and gWormCoords[HEAD]['y'] == gApple['y']:
         # don't remove worm's tail segment
-        gApple = getRandomLocation() # set a new gApple somewhere
+        #gApple = getRandomLocation() # set a new gApple somewhere
+        return True
     else:
         del gWormCoords[-1] # remove worm's tail segment
 
@@ -137,6 +149,8 @@ def game_update():
         newHead = {'x': gWormCoords[HEAD]['x'] - 1, 'y': gWormCoords[HEAD]['y']}
     elif gDirection == RIGHT:
         newHead = {'x': gWormCoords[HEAD]['x'] + 1, 'y': gWormCoords[HEAD]['y']}
+    elif gDirection == STOP:
+        newHead = {'x': gWormCoords[HEAD]['x'], 'y': gWormCoords[HEAD]['y']}
     gWormCoords.insert(0, newHead)
     # game is not over, return False
     return False
@@ -242,14 +256,23 @@ def drawScore(score):
 
 
 def drawWorm(gWormCoords):
-    for coord in gWormCoords:
-        x = coord['x'] * CELLSIZE
-        y = coord['y'] * CELLSIZE
-        wormSegmentRect = pygame.Rect(x, y, CELLSIZE, CELLSIZE)
-        pygame.draw.rect(DISPLAYSURF, DARKGREEN, wormSegmentRect)
-        wormInnerSegmentRect = pygame.Rect(x + 4, y + 4, CELLSIZE - 8, CELLSIZE - 8)
-        pygame.draw.rect(DISPLAYSURF, GREEN, wormInnerSegmentRect)
-
+    global sTank, gDirection
+    # Scales the image
+    sImage = pygame.transform.scale(sTank, ((CELLSIZE * 3), (CELLSIZE * 3)))
+    # Rotates the image
+    if gDirection == LEFT:
+        sImageRotated = pygame.transform.rotate(sImage, 90)
+    elif gDirection == DOWN:
+        sImageRotated = pygame.transform.rotate(sImage, 180)
+    elif gDirection == RIGHT:
+        sImageRotated = pygame.transform.rotate(sImage, 270)
+    else:
+        sImageRotated = sImage
+    
+    x = gWormCoords[HEAD]['x'] * CELLSIZE
+    y = gWormCoords[HEAD]['y'] * CELLSIZE
+    # Copies image to display
+    DISPLAYSURF.blit(sImageRotated, (x,y))
 
 def drawApple(coord):
     x = coord['x'] * CELLSIZE
