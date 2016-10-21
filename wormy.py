@@ -167,7 +167,10 @@ def drawGrid():
 def game_update():
 
     global gPlayer_X, gPlayer_Y
+    global turretDir, playerShot.x, playerShot.y, playerShot.d, shotConnected = false, shotFired = false
 
+    
+    #MOVEMENT OF TANK SEGMENT
     for event in pygame.event.get(): # event handling loop
         if event.type == QUIT:
             terminate()
@@ -176,21 +179,54 @@ def game_update():
                 if Matrix[(gPlayer_X-1)][gPlayer_Y]!=1:
                     Matrix[gPlayer_X][gPlayer_Y] = 0
                     gPlayer_X -= 1
+                    direction = LEFT
             elif (event.key == K_RIGHT or event.key == K_d):
                 if Matrix[(gPlayer_X+1)][gPlayer_Y]!=1:
                     Matrix[gPlayer_X][gPlayer_Y] = 0
                     gPlayer_X += 1
+                    direction = RIGHT
             elif (event.key == K_UP or event.key == K_w):
                 if Matrix[(gPlayer_X)][gPlayer_Y-1]!=1:
                     Matrix[gPlayer_X][gPlayer_Y] = 0
                     gPlayer_Y -= 1
+                    direction = UP
             elif (event.key == K_DOWN or event.key == K_s):
                 if Matrix[(gPlayer_X)][gPlayer_Y+1]!=1:
                     Matrix[gPlayer_X][gPlayer_Y] = 0
                     gPlayer_Y += 1
+                    direction = DOWN                        
             elif event.key == K_ESCAPE:
-                terminate()
+                terminate()       
                 
+        #MOVING AND ROTATION OF TURRET SEGMENT    
+        elif event.type == KEYDOWN:
+            if (event.key == K_LEFT):
+                playerShot = shoot(player.x, player.y, turretDir) 
+                turretDir = LEFT
+                shotFired = true
+            elif (event.key == K_RIGHT):
+                playerShot = shoot(player.x, player.y, turretDir) 
+                turretDir = RIGHT
+                shotFired = true
+            elif (event.key == K_UP):
+                playerShot = shoot(player.x, player.y, turretDir) 
+                turretDir = UP
+                shotFired = true
+            elif (event.key == K_DOWN or event.key == K_s):
+                playerShot = shoot(player.x, player.y, turretDir) 
+                turretDir = DOWN
+                shotFired = true
+        
+        #If the shot is fired but hasn't hit anything yet move it along in the appropriate direction
+        if (shotFired && !shotConnected)
+            if (playerShot.d == UP && Matrix[(playerShot.x)][playerShot.y++]!=1)
+                playerShot.y++
+            elif (playerShot.d == DOWN && Matrix[(playerShot.x)][playerShot.y--]!=1)
+                playerShot.y--
+            elif (playerShot.d == LEFT && Matrix[(playerShot.x--)][playerShot.y]!=1)
+                playerShot.x--
+            elif (playerShot.d == RIGHT && Matrix[(playerShot.x++)][playerShot.y]!=1)
+                playerShot.x++
                    
 # ------------------------------------------------------------------------------------------------------------------------------------------
                    
@@ -268,7 +304,28 @@ def drawMap():
             elif Matrix[x][y] == 2:
                 PlayerRect = pygame.Rect(x*CELLSIZE, y*CELLSIZE, CELLSIZE, CELLSIZE)
                 pygame.draw.rect(DISPLAYSURF, GREEN, PlayerRect)
+                
+def shoot(player.x, player.y, direction)
+{
+    if(direction == 'UP')
+        bullet.x = player.x
+        bullet.y = player.y++
+        bullet.d = UP
+    if(direction == 'DOWN')
+        bullet.x = player.x
+        bullet.y = player.y--
+        bullet.d = DOWN
+    if(direction == 'LEFT')
+        bullet.x = player.x--
+        bullet.y = player.y    
+        bullet.d = LEFT
+    if(direction == 'RIGHT')
+        bullet.x = player.x++
+        bullet.y = player.y
+        bullet.d = RIGHT
+    
+    return bullet.x, bullet.y, bullet.d
+}
             
-
 if __name__ == '__main__':
     main()
