@@ -116,6 +116,8 @@ UP = 'up'
 DOWN = 'down'
 LEFT = 'left'
 RIGHT = 'right'
+gDirection = UP
+turretDir = UP
 
 # Load art assets (from same directory as python)
 sTank = pygame.image.load('GoodTank.png')
@@ -269,9 +271,9 @@ def drawMap():
     for y in range(0, 45):
         for x in range (0, 45):
             if Matrix[x][y] == 0:
-                DISPLAYSURF.blit(sWall, (x*CELLSIZE,y*CELLSIZE))
-            elif Matrix[x][y] == 1:
                 DISPLAYSURF.blit(sFloor, (x*CELLSIZE,y*CELLSIZE))
+            elif Matrix[x][y] == 1:
+                DISPLAYSURF.blit(sWall, (x*CELLSIZE,y*CELLSIZE))
             elif Matrix[x][y] == 2:
                 #Draw Tank
                 # Scales the image
