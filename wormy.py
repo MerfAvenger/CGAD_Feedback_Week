@@ -120,8 +120,6 @@ RIGHT = 'right'
 # Load art assets (from same directory as python)
 sTank = pygame.image.load('GoodTank.png')
 sGoodGun = pygame.image.load('TankGunGood.png')
-sEnemy = pygame.image.load('BadTank.png')
-sBadGun = pygame.image.load('TankGunBad.png')
 sBullet = pygame.image.load('Bullet.png')
 sFloor = pygame.image.load('TileFloor.png')
 sWall = pygame.image.load('TileWall.png')
