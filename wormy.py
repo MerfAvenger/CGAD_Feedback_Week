@@ -219,14 +219,14 @@ def game_update():
         
         #If the shot is fired but hasn't hit anything yet move it along in the appropriate direction
         if (shotFired && !shotConnected)
-            if (playerShot.d == UP && Matrix[(playerShot.x)][playerShot.y++]!=1)
-                playerShot.y++
-            elif (playerShot.d == DOWN && Matrix[(playerShot.x)][playerShot.y--]!=1)
-                playerShot.y--
-            elif (playerShot.d == LEFT && Matrix[(playerShot.x--)][playerShot.y]!=1)
-                playerShot.x--
-            elif (playerShot.d == RIGHT && Matrix[(playerShot.x++)][playerShot.y]!=1)
-                playerShot.x++
+            if (playerShot.d == UP and Matrix[(playerShot.x)][playerShot.y+1]!=1)
+                playerShot.y+1
+            elif (playerShot.d == DOWN and Matrix[(playerShot.x)][playerShot.y-1]!=1)
+                playerShot.y-1
+            elif (playerShot.d == LEFT and Matrix[(playerShot.x-1)][playerShot.y]!=1)
+                playerShot.x-1
+            elif (playerShot.d == RIGHT and Matrix[(playerShot.x+1)][playerShot.y]!=1)
+                playerShot.x+1
                    
 # ------------------------------------------------------------------------------------------------------------------------------------------
                    
@@ -309,18 +309,18 @@ def shoot(player.x, player.y, direction)
 {
     if(direction == 'UP')
         bullet.x = player.x
-        bullet.y = player.y++
+        bullet.y = player.y+1
         bullet.d = UP
     if(direction == 'DOWN')
         bullet.x = player.x
-        bullet.y = player.y--
+        bullet.y = player.y-1
         bullet.d = DOWN
     if(direction == 'LEFT')
-        bullet.x = player.x--
+        bullet.x = player.x-1
         bullet.y = player.y    
         bullet.d = LEFT
     if(direction == 'RIGHT')
-        bullet.x = player.x++
+        bullet.x = player.x+1
         bullet.y = player.y
         bullet.d = RIGHT
     
