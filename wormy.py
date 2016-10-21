@@ -117,6 +117,11 @@ DOWN = 'down'
 LEFT = 'left'
 RIGHT = 'right'
 
+# Load art assets (from same directory as python)
+sTank = pygame.image.load('GoodTank.png')
+sFloor = pygame.image.load("TileFloor.png")
+sWall = pygame.image.load("TileWall.png")
+
 def main():
 
     init()
@@ -256,18 +261,31 @@ def drawGrid():
         pygame.draw.line(DISPLAYSURF, BLACK, (0, y), (WINDOWWIDTH, y))
 
 def drawMap():
-
+    global sTank, sFloor, sWall, gDirection
+    
+    
     for y in range(0, 45):
         for x in range (0, 45):
             if Matrix[x][y] == 0:
-                WallRect = pygame.Rect(x*CELLSIZE, y*CELLSIZE, CELLSIZE, CELLSIZE)
-                pygame.draw.rect(DISPLAYSURF, DARKGRAY, WallRect)
+                DISPLAYSURF.blit(sWall, (x*CELLSIZE,y*CELLSIZE))
             elif Matrix[x][y] == 1:
-                FloorRect = pygame.Rect(x*CELLSIZE, y*CELLSIZE, CELLSIZE, CELLSIZE)
-                pygame.draw.rect(DISPLAYSURF, RED, FloorRect)
+                DISPLAYSURF.blit(sFloor, (x*CELLSIZE,y*CELLSIZE))
             elif Matrix[x][y] == 2:
-                PlayerRect = pygame.Rect(x*CELLSIZE, y*CELLSIZE, CELLSIZE, CELLSIZE)
-                pygame.draw.rect(DISPLAYSURF, GREEN, PlayerRect)
+                #Draw Tank
+                # Scales the image
+                sImage = pygame.transform.scale(sTank, ((CELLSIZE * 3), (CELLSIZE * 3)))
+                # Rotates the image
+                if gDirection == LEFT:
+                    sImageRotated = pygame.transform.rotate(sImage, 90)
+                elif gDirection == DOWN:
+                    sImageRotated = pygame.transform.rotate(sImage, 180)
+                elif gDirection == RIGHT:
+                    sImageRotated = pygame.transform.rotate(sImage, 270)
+                else:
+                    sImageRotated = sImage
+                DISPLAYSURF.blit(sImageRotated, (x*CELLSIZE,y*CELLSIZE))
+                #Draw Turret
+                
             
 
 if __name__ == '__main__':
