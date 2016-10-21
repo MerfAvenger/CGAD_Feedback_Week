@@ -205,7 +205,7 @@ def game_update():
             if (event.key == K_LEFT):
                 playerShot = shoot(playerx, playery, turretDir) 
                 turretDir = LEFT
-                shotFired = true
+                shotFired = true #Creates an "object" for the player's bullet and assign it a direction
             elif (event.key == K_RIGHT):
                 playerShot = shoot(playerx, playery, turretDir) 
                 turretDir = RIGHT
@@ -220,7 +220,7 @@ def game_update():
                 shotFired = true
         
         #If the shot is fired but hasn't hit anything yet move it along in the appropriate direction
-        if (shotFired and shotConnected != true)
+        if (shotFired and shotConnected != True)
             if (playerShot.d == UP and Matrix[(playerShotx)][playerShoty+1]!=1)
                 playerShoty+1
             elif (playerShot.d == DOWN and Matrix[(playerShotx)][playerShoty-1]!=1)
@@ -230,8 +230,8 @@ def game_update():
             elif (playerShot.d == RIGHT and Matrix[(playerShotx+1)][playerShoty]!=1)
                 playerShotx+1
             else 
-                shotConnected = true
-                   
+                shotConnected = true #If the shot is 1 it should use this else statement to assume it's connected with something
+                                     #WIP                   
 # ------------------------------------------------------------------------------------------------------------------------------------------
                    
 def game_render():
@@ -308,15 +308,13 @@ def drawMap():
             elif Matrix[x][y] == 2:
                 PlayerRect = pygame.Rect(x*CELLSIZE, y*CELLSIZE, CELLSIZE, CELLSIZE)
                 pygame.draw.rect(DISPLAYSURF, GREEN, PlayerRect)
-                
-                
-     
-def shoot(playerx, playery, direction)
-{
+                    
+def shoot(playerx, playery, direction) #Takes in the player's start coordinates and the firing direction
     if(direction == 'UP')
         bulletx = playerx
         bullety = playery+1
-        bulletd = UP
+        bulletd = UP #If the player shoots "upwards" increase the bullet's Y value to start above the player. Also sets the direction
+                     #the bullet is supposed to follow
     if(direction == 'DOWN')
         bulletx = playerx
         bullety = playery-1
@@ -330,8 +328,8 @@ def shoot(playerx, playery, direction)
         bullety = playery
         bulletd = RIGHT
     
-    return bulletx, bullety, bulletd
-}
+    #return bulletx, bullety, bulletd #Returns the values required for the bullet to continue outside of this function (i.e. update its 
+    #position in realtime in the game loop)
             
 if __name__ == '__main__':
     main()
