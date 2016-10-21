@@ -106,7 +106,7 @@ Matrix[gPlayer_X][gPlayer_Y] = 2
 # gWormCoords = [{'x': gStartx,     'y': gStarty},
 #               {'x': gStartx - 1, 'y': gStarty},
 #               {'x': gStartx - 2, 'y': gStarty}]
-# gDirection = RIGHT
+# 
 
 # -----------------------------------------------------------------------------------------------------------------------------------------
 # GAME CODE AND FUNCTIONS
@@ -175,7 +175,7 @@ def drawGrid():
     
 def game_update():
 
-    global gPlayer_X, gPlayer_Y
+    global gPlayer_X, gPlayer_Y, gDirection
 
     for event in pygame.event.get(): # event handling loop
         if event.type == QUIT:
@@ -185,18 +185,26 @@ def game_update():
                 if Matrix[(gPlayer_X-1)][gPlayer_Y]!=1:
                     Matrix[gPlayer_X][gPlayer_Y] = 0
                     gPlayer_X -= 1
+                    gDirection = LEFT
+                    turretDir = LEFT
             elif (event.key == K_RIGHT or event.key == K_d):
                 if Matrix[(gPlayer_X+1)][gPlayer_Y]!=1:
                     Matrix[gPlayer_X][gPlayer_Y] = 0
                     gPlayer_X += 1
+                    gDirection = RIGHT
+                    turretDir = RIGHT
             elif (event.key == K_UP or event.key == K_w):
                 if Matrix[(gPlayer_X)][gPlayer_Y-1]!=1:
                     Matrix[gPlayer_X][gPlayer_Y] = 0
                     gPlayer_Y -= 1
+                    gDirection = UP
+                    turretDir = UP
             elif (event.key == K_DOWN or event.key == K_s):
                 if Matrix[(gPlayer_X)][gPlayer_Y+1]!=1:
                     Matrix[gPlayer_X][gPlayer_Y] = 0
                     gPlayer_Y += 1
+                    gDirection = DOWN
+                    turretDir = DOWN
             elif event.key == K_ESCAPE:
                 terminate()
                 
