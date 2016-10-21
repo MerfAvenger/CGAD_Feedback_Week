@@ -218,7 +218,7 @@ def game_update():
                 shotFired = true
         
         #If the shot is fired but hasn't hit anything yet move it along in the appropriate direction
-        if (shotFired && !shotConnected)
+        if (shotFired and shotConnected != true)
             if (playerShot.d == UP and Matrix[(playerShot.x)][playerShot.y+1]!=1)
                 playerShot.y+1
             elif (playerShot.d == DOWN and Matrix[(playerShot.x)][playerShot.y-1]!=1)
@@ -227,6 +227,8 @@ def game_update():
                 playerShot.x-1
             elif (playerShot.d == RIGHT and Matrix[(playerShot.x+1)][playerShot.y]!=1)
                 playerShot.x+1
+            else 
+                shotConnected = true
                    
 # ------------------------------------------------------------------------------------------------------------------------------------------
                    
@@ -305,6 +307,8 @@ def drawMap():
                 PlayerRect = pygame.Rect(x*CELLSIZE, y*CELLSIZE, CELLSIZE, CELLSIZE)
                 pygame.draw.rect(DISPLAYSURF, GREEN, PlayerRect)
                 
+                
+     
 def shoot(player.x, player.y, direction)
 {
     if(direction == 'UP')
