@@ -27,73 +27,14 @@ DARKGREEN = (  0, 155,   0)
 DARKGRAY  = ( 40,  40,  40)
 BGCOLOR = GREEN
 ################################################
-##CREATING ARRAY SYSTEM (ANNOYING AS SHIT)
+#Creating Array System
+#Matrix is a list of lists, creating a large array, and each location being treated as a tile
 width = 45
 height =  45
 Matrix = [[0 for x in range(width)] for y in range(height)] 
 
-##DRAWING THE MAP
-for height in range (0,45):
-    for width in range (0,45):
-        if width ==0:
-            Matrix[width][height] = 1
-        elif width ==44:
-            Matrix[width][height] = 1
-        elif height ==0:
-            Matrix[width][height] = 1
-        elif height ==22:
-            Matrix[width][height] = 1
-        else:
-            Matrix[width][height] = 0
-            
-            
-            
-
-for i in range (4,10):
-    Matrix[4][i]  = 1
-    Matrix[4][(i+9)] = 1
     
-    Matrix[40][i] = 1
-    Matrix[40][i+9] = 1
-    
-    
-for x in range (5,13):
-        
-    Matrix[x][4] = 1
-    Matrix[x][18] = 1
-    
-    Matrix[x+27][4] = 1
-    Matrix[x+27][18] = 1
-    
-for x in range (8,13):
-
-    Matrix[x+12][7]=1
-    Matrix[x+12][15]=1
-    
-    for y in range(8,15):
-        Matrix[x][y]=1
-        Matrix[x+24][y]=1
-
-
-for i in range (4,8):
-    Matrix[16][i]  = 1
-    Matrix[16][(i+11)] = 1
-    
-    Matrix[28][i] = 1
-    Matrix[28][i+11] = 1
-    
-for y in range(1,8):
-    Matrix[20][y] = 1
-    Matrix[24][y] = 1
-    
-    Matrix[20][y+14] = 1
-    Matrix[24][y+14] = 1
-    
-for x in range(16,29):
-    Matrix[x][11] = 1
-   
-    
-
+#gPlayer_X and gPlayer_Y is the (x,y) coordinates for the player
 gPlayer_X = 2
 gPlayer_Y = 2
 Matrix[gPlayer_X][gPlayer_Y] = 2
@@ -181,30 +122,39 @@ def game_update():
         if event.type == QUIT:
             terminate()
         elif event.type == KEYDOWN:
+		
+			#Checks the players movement and calculates collision at the same time
+			
+			#Collision is done by checking that the tile in the Matrix is a not a wall
             if (event.key == K_LEFT or event.key == K_a):
                 if Matrix[(gPlayer_X-1)][gPlayer_Y]!=1:
                     Matrix[gPlayer_X][gPlayer_Y] = 0
                     gPlayer_X -= 1
                     gDirection = LEFT
                     turretDir = LEFT
+					
             elif (event.key == K_RIGHT or event.key == K_d):
                 if Matrix[(gPlayer_X+1)][gPlayer_Y]!=1:
                     Matrix[gPlayer_X][gPlayer_Y] = 0
                     gPlayer_X += 1
                     gDirection = RIGHT
                     turretDir = RIGHT
+					
             elif (event.key == K_UP or event.key == K_w):
                 if Matrix[(gPlayer_X)][gPlayer_Y-1]!=1:
                     Matrix[gPlayer_X][gPlayer_Y] = 0
                     gPlayer_Y -= 1
                     gDirection = UP
                     turretDir = UP
+					
             elif (event.key == K_DOWN or event.key == K_s):
                 if Matrix[(gPlayer_X)][gPlayer_Y+1]!=1:
                     Matrix[gPlayer_X][gPlayer_Y] = 0
                     gPlayer_Y += 1
                     gDirection = DOWN
                     turretDir = DOWN
+					
+			#Escape to quit
             elif event.key == K_ESCAPE:
                 terminate()
                 
@@ -274,8 +224,64 @@ def drawGrid():
 
 def drawMap():
     global sTank, sGoodGun, sFloor, sWall, gDirection, turretDir
+	
+	#Drawing the outside walls
+	for height in range (0,45):
+		for width in range (0,45):
+			if width ==0:
+				Matrix[width][height] = 1
+			elif width ==44:
+				Matrix[width][height] = 1
+			elif height ==0:
+				Matrix[width][height] = 1
+			elif height ==22:
+				Matrix[width][height] = 1
+			else:
+				Matrix[width][height] = 0
+				
+	#Below draws the inside walls and obstacles, 
+	for y in range (4,10):
+		Matrix[4][y]  = 1
+		Matrix[4][(y+9)] = 1
+		
+		Matrix[40][y] = 1
+		Matrix[40][y+9] = 1
+		
+	for x in range (5,13):
+			
+		Matrix[x][4] = 1
+		Matrix[x][18] = 1
+		Matrix[x+27][4] = 1
+		Matrix[x+27][18] = 1
+		
+	for x in range (8,13):
+
+		Matrix[x+12][7]=1
+		Matrix[x+12][15]=1
+		
+		for y in range(8,15):
+			Matrix[x][y]=1
+			Matrix[x+24][y]=1
+
+	for y in range (4,8):
+	
+		Matrix[16][y]  = 1
+		Matrix[16][(y+11)] = 1
+		Matrix[28][y] = 1
+		Matrix[28][y+11] = 1
+		
+	for y in range(1,8):
+	
+		Matrix[20][y] = 1
+		Matrix[24][y] = 1
+		Matrix[20][y+14] = 1
+		Matrix[24][y+14] = 1
+		
+	for x in range(16,29):
+		Matrix[x][11] = 1
+		
     
-    
+    #Draws the Tank and rotates body
     for y in range(0, 45):
         for x in range (0, 45):
             if Matrix[x][y] == 0:
