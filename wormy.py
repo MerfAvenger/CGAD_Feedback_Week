@@ -119,8 +119,12 @@ RIGHT = 'right'
 
 # Load art assets (from same directory as python)
 sTank = pygame.image.load('GoodTank.png')
-sFloor = pygame.image.load("TileFloor.png")
-sWall = pygame.image.load("TileWall.png")
+sGoodGun = pygame.image.load('TankGunGood.png')
+sEnemy = pygame.image.load('BadTank.png')
+sBadGun = pygame.image.load('TankGunBad.png')
+sBullet = pygame.image.load('Bullet.png')
+sFloor = pygame.image.load('TileFloor.png')
+sWall = pygame.image.load('TileWall.png')
 
 def main():
 
@@ -261,7 +265,7 @@ def drawGrid():
         pygame.draw.line(DISPLAYSURF, BLACK, (0, y), (WINDOWWIDTH, y))
 
 def drawMap():
-    global sTank, sFloor, sWall, gDirection
+    global sTank, sGoodGun, sFloor, sWall, gDirection, turretDir
     
     
     for y in range(0, 45):
@@ -273,7 +277,7 @@ def drawMap():
             elif Matrix[x][y] == 2:
                 #Draw Tank
                 # Scales the image
-                sImage = pygame.transform.scale(sTank, ((CELLSIZE * 3), (CELLSIZE * 3)))
+                sImage = pygame.transform.scale(sTank, (CELLSIZE, CELLSIZE))
                 # Rotates the image
                 if gDirection == LEFT:
                     sImageRotated = pygame.transform.rotate(sImage, 90)
@@ -285,6 +289,18 @@ def drawMap():
                     sImageRotated = sImage
                 DISPLAYSURF.blit(sImageRotated, (x*CELLSIZE,y*CELLSIZE))
                 #Draw Turret
+                # Scales the image
+                sImage = pygame.transform.scale(sGoodGun, (CELLSIZE, CELLSIZE))
+                # Rotates the image
+                if turretDir == LEFT:
+                    sImageRotated = pygame.transform.rotate(sImage, 90)
+                elif turretDir == DOWN:
+                    sImageRotated = pygame.transform.rotate(sImage, 180)
+                elif turretDir == RIGHT:
+                    sImageRotated = pygame.transform.rotate(sImage, 270)
+                else:
+                    sImageRotated = sImage
+                DISPLAYSURF.blit(sImageRotated, (x*CELLSIZE,y*CELLSIZE))
                 
             
 
