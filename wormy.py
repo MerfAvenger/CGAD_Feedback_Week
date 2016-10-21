@@ -51,7 +51,7 @@ gStarty = random.randint(5, CELLHEIGHT - 6)
 gWormCoords = [{'x': gStartx,     'y': gStarty},
               {'x': gStartx - 1, 'y': gStarty},
               {'x': gStartx - 2, 'y': gStarty}]
-gDirection = STOP
+#gDirection = STOP
 
 gApple = {'x': 0, 'y': 0}
 
@@ -106,23 +106,23 @@ def game_init():
 def game_update():
     global gWormCoords, gDirection, gApple
     
-    for event in pygame.event.get(): # event handling loop
-        gDirection == STOP
-        if event.type == QUIT:
-            terminate()
-        elif event.type == KEYDOWN:
-            if (event.key == K_LEFT or event.key == K_a) and gDirection != RIGHT:
-                gDirection = LEFT
-            elif (event.key == K_RIGHT or event.key == K_d) and gDirection != LEFT:
-                gDirection = RIGHT
-            elif (event.key == K_UP or event.key == K_w) and gDirection != DOWN:
-                gDirection = UP
-            elif (event.key == K_DOWN or event.key == K_s) and gDirection != UP:
-                gDirection = DOWN
-            elif event.key == K_ESCAPE:
-                terminate()
-        else:
-            gDirection = STOP
+#    for event in pygame.event.get(): # event handling loop
+#        gDirection == STOP
+#        if event.type == QUIT:
+#            terminate()
+#        elif event.type == KEYDOWN:
+#            if (event.key == K_LEFT or event.key == K_a) and gDirection != RIGHT:
+#               gDirection = LEFT
+#            elif (event.key == K_RIGHT or event.key == K_d) and gDirection != LEFT:
+#                gDirection = RIGHT
+#            elif (event.key == K_UP or event.key == K_w) and gDirection != DOWN:
+#                gDirection = UP
+#            elif (event.key == K_DOWN or event.key == K_s) and gDirection != UP:
+#                gDirection = DOWN
+#            elif event.key == K_ESCAPE:
+#                terminate()
+#        else:
+#            gDirection = STOP
                 
 
     # check if the worm has hit itself or the edge
