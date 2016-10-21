@@ -10,8 +10,8 @@ from pygame.locals import *
 # GRAPHICS SETUP
 
 FPS = 20
-WINDOWWIDTH = 640
-WINDOWHEIGHT = 320
+WINDOWWIDTH = 900
+WINDOWHEIGHT = 460
 CELLSIZE = 20
 assert WINDOWWIDTH % CELLSIZE == 0, "Window width must be a multiple of cell size."
 assert WINDOWHEIGHT % CELLSIZE == 0, "Window height must be a multiple of cell size."
@@ -28,20 +28,20 @@ DARKGRAY  = ( 40,  40,  40)
 BGCOLOR = GREEN
 ################################################
 ##CREATING ARRAY SYSTEM (ANNOYING AS SHIT)
-width = 32
-height =  32
+width = 45
+height =  45
 Matrix = [[0 for x in range(width)] for y in range(height)] 
 
 ##DRAWING THE MAP
-for height in range (0,32):
-    for width in range (0,32):
+for height in range (0,45):
+    for width in range (0,45):
         if width ==0:
             Matrix[width][height] = 1
-        elif width ==31:
+        elif width ==44:
             Matrix[width][height] = 1
         elif height ==0:
             Matrix[width][height] = 1
-        elif height ==15:
+        elif height ==22:
             Matrix[width][height] = 1
         else:
             Matrix[width][height] = 0
@@ -49,34 +49,53 @@ for height in range (0,32):
             
             
 
-for y in range (4,6):
-    Matrix[5][y]  = 1
-    Matrix[5][(y+6)] = 1
+for i in range (4,10):
+    Matrix[4][i]  = 1
+    Matrix[4][(i+9)] = 1
     
-    Matrix[10][y]  = 1
-    Matrix[10][(y+6)] = 1
+    Matrix[40][i] = 1
+    Matrix[40][i+9] = 1
     
-    Matrix[21][y]  = 1
-    Matrix[21][(y+6)] = 1
     
-    Matrix[26][y]  = 1
-    Matrix[26][(y+6)] = 1
-
-for y in range (6,10):
+for x in range (5,13):
         
-    Matrix[15][y] = 1
-    Matrix[16][y] = 1
+    Matrix[x][4] = 1
+    Matrix[x][18] = 1
+    
+    Matrix[x+27][4] = 1
+    Matrix[x+27][18] = 1
+    
+for x in range (8,13):
 
-for y in range (13,16):
-    Matrix[15][y] = 1
-    Matrix[16][y] = 1
+    Matrix[x+12][7]=1
+    Matrix[x+12][15]=1
+    
+    for y in range(8,15):
+        Matrix[x][y]=1
+        Matrix[x+24][y]=1
 
-for y in range (0,3):
-    Matrix[15][y] = 1
-    Matrix[16][y] = 1
 
-gPlayer_X = 3
-gPlayer_Y = 3
+for i in range (4,8):
+    Matrix[16][i]  = 1
+    Matrix[16][(i+11)] = 1
+    
+    Matrix[28][i] = 1
+    Matrix[28][i+11] = 1
+    
+for y in range(1,8):
+    Matrix[20][y] = 1
+    Matrix[24][y] = 1
+    
+    Matrix[20][y+14] = 1
+    Matrix[24][y+14] = 1
+    
+for x in range(16,29):
+    Matrix[x][11] = 1
+   
+    
+
+gPlayer_X = 2
+gPlayer_Y = 2
 Matrix[gPlayer_X][gPlayer_Y] = 2
 
 # ----------------------------------------------------------------------------------------------------------------------------------------
@@ -232,14 +251,14 @@ def showGameOverScreen():
                    
 def drawGrid():
     for x in range(0, WINDOWWIDTH, CELLSIZE): # draw vertical lines
-        pygame.draw.line(DISPLAYSURF, DARKGRAY, (x, 0), (x, WINDOWHEIGHT))
+        pygame.draw.line(DISPLAYSURF, BLACK, (x, 0), (x, WINDOWHEIGHT))
     for y in range(0, WINDOWHEIGHT, CELLSIZE): # draw horizontal lines
-        pygame.draw.line(DISPLAYSURF, DARKGRAY, (0, y), (WINDOWWIDTH, y))
+        pygame.draw.line(DISPLAYSURF, BLACK, (0, y), (WINDOWWIDTH, y))
 
 def drawMap():
 
-    for y in range(0, 32):
-        for x in range (0, 32):
+    for y in range(0, 45):
+        for x in range (0, 45):
             if Matrix[x][y] == 0:
                 WallRect = pygame.Rect(x*CELLSIZE, y*CELLSIZE, CELLSIZE, CELLSIZE)
                 pygame.draw.rect(DISPLAYSURF, DARKGRAY, WallRect)
